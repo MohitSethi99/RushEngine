@@ -1,0 +1,3 @@
+[submodule "RushEngine/vendor/spdlog"]
+	path = RushEngine/vendor/spdlog
+	url = https://github.com/gabime/spdlog
