@@ -18,6 +18,9 @@ project "RushEngine"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+	pchheader "rspch.h"
+	pchsource "RushEngine/src/rspch.cpp"
+
 	files
 	{
 		"%{prj.name}/src/**.h",

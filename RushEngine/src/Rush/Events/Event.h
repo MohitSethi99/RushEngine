@@ -1,9 +1,7 @@
 #pragma once
 
+#include "rspch.h"
 #include "Rush/Core.h"
-
-#include <string>
-#include <functional>
 
 namespace Rush 
 {

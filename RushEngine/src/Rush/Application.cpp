@@ -1,3 +1,4 @@
+#include "rspch.h"
 #include "Application.h"
 
 #include "Rush/Events/ApplicationEvent.h"

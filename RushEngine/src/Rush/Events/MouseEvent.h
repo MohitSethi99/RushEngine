@@ -2,8 +2,6 @@
 
 #include "Event.h"
 
-#include <sstream>
-
 namespace Rush {
 
 	class RUSH_API MouseMovedEvent : public Event
