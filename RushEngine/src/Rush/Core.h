@@ -9,3 +9,5 @@
 #else
 	#error Rush only supports Windows!
 #endif // RS_PLATFORM_WINDOWS
+
+#define BIT(x) (1 << x)

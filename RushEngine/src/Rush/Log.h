@@ -4,6 +4,7 @@
 
 #include "Core.h"
 #include "spdlog/spdlog.h"
+#include "spdlog/fmt/ostr.h"
 
 namespace Rush 
 {
@@ -31,5 +32,5 @@ namespace Rush
 #define RS_ERROR(...)         ::Rush::Log::GetClientLogger()->error(__VA_ARGS__)
 #define RS_WARN(...)          ::Rush::Log::GetClientLogger()->warn(__VA_ARGS__)
 #define RS_INFO(...)          ::Rush::Log::GetClientLogger()->info(__VA_ARGS__)
-#define RS_TRACE(...)         ::Rush::Log::GetClientLogger()->trace(__VA_ARGS__)
+#define RS_TRACE(...)	      ::Rush::Log::GetClientLogger()->trace(__VA_ARGS__)
 #define RS_FATAL(...)         ::Rush::Log::GetClientLogger()->fatal(__VA_ARGS__)
