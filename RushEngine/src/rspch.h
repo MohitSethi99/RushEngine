@@ -12,6 +12,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "Rush/Log.h"
+
 #ifdef RS_PLATFORM_WINDOWS
 	#include <Windows.h>
 #endif // RS_PLATFORM_WINDOWS

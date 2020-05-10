@@ -1,3 +1,6 @@
 [submodule "RushEngine/vendor/spdlog"]
 	path = RushEngine/vendor/spdlog
 	url = https://github.com/gabime/spdlog
+[submodule "RushEngine/vendor/GLFW"]
+	path = RushEngine/vendor/GLFW
+	url = https://github.com/TheCherno/glfw
