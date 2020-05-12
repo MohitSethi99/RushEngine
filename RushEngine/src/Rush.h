@@ -6,6 +6,8 @@
 #include "Rush/Layer.h"
 #include "Rush/Log.h"
 
+#include "Rush/ImGui/ImGuiLayer.h"
+
 // ---------Entry Point-----------------------------
 #include "Rush/EntryPoint.h"
 // -------------------------------------------------

@@ -22,7 +22,11 @@ public:
 class Sandbox : public Rush::Application
 {
 public:
-	Sandbox() { PushLayer(new ExampleLayer()); }
+	Sandbox() 
+	{
+		PushLayer(new ExampleLayer());
+		PushOverlay(new Rush::ImGuiLayer());
+	}
 	~Sandbox() {}
 };
 
