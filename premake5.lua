@@ -1,5 +1,6 @@
 workspace "RushEngine"
 	architecture "x64"
+	startproject "Sandbox"
 
 	configurations
 	{
@@ -19,8 +20,6 @@ IncludeDir["ImGui"] = "RushEngine/vendor/imgui"
 include "RushEngine/vendor/GLFW"
 include "RushEngine/vendor/Glad"
 include "RushEngine/vendor/imgui"
-
-startproject "Sandbox"
 
 project "RushEngine"
 	location "RushEngine"
