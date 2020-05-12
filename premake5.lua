@@ -13,8 +13,10 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
 IncludeDir["GLFW"] = "RushEngine/vendor/GLFW/include"
+IncludeDir["Glad"] = "RushEngine/vendor/Glad/include"
 
 include "RushEngine/vendor/GLFW"
+include "RushEngine/vendor/Glad"
 
 project "RushEngine"
 	location "RushEngine"
@@ -37,13 +39,14 @@ project "RushEngine"
 	{
 		"%{prj.name}/src/",
 		"%{prj.name}/vendor/spdlog/include",
-		"%{prj.name}/vendor/spdlog/include",
-		"%{IncludeDir.GLFW}"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.Glad}"
 	}
 
 	links 
 	{ 
 		"GLFW",
+		"Glad",
 		"opengl32.lib"
 	}
 
@@ -55,7 +58,8 @@ project "RushEngine"
 		defines
 		{
 			"RS_PLATFORM_WINDOWS",
-			"RS_BUILD_DLL"
+			"RS_BUILD_DLL",
+			"GLFW_INCLUDE_NONE"
 		}
 
 		postbuildcommands
