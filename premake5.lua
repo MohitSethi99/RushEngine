@@ -20,6 +20,8 @@ include "RushEngine/vendor/GLFW"
 include "RushEngine/vendor/Glad"
 include "RushEngine/vendor/imgui"
 
+startproject "Sandbox"
+
 project "RushEngine"
 	location "RushEngine"
 	kind "SharedLib"
