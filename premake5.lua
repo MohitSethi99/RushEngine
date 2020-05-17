@@ -16,6 +16,7 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "RushEngine/vendor/GLFW/include"
 IncludeDir["Glad"] = "RushEngine/vendor/Glad/include"
 IncludeDir["ImGui"] = "RushEngine/vendor/imgui"
+IncludeDir["glm"] = "RushEngine/vendor/glm"
 
 group "Dependencies"
 	include "RushEngine/vendor/GLFW"
@@ -39,7 +40,9 @@ project "RushEngine"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/glm/glm/**.hpp",
+		"%{prj.name}/vendor/glm/glm/**.inl",
 	}
 
 	includedirs
@@ -48,7 +51,8 @@ project "RushEngine"
 		"%{prj.name}/vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
-		"%{IncludeDir.ImGui}"
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.glm}"
 	}
 
 	links 
@@ -113,7 +117,8 @@ project "Sandbox"
 	includedirs
 	{
 		"RushEngine/vendor/spdlog/include",
-		"RushEngine/src"
+		"RushEngine/src",
+		"%{IncludeDir.glm}"
 	}
 
 	filter "system:windows"

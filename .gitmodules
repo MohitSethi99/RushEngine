@@ -7,3 +7,6 @@
 [submodule "RushEngine/vendor/imgui"]
 	path = RushEngine/vendor/imgui
 	url = https://github.com/MohitSethi99/imgui
+[submodule "RushEngine/vendor/glm"]
+	path = RushEngine/vendor/glm
+	url = https://github.com/g-truc/glm
