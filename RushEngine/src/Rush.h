@@ -6,6 +6,10 @@
 #include "Rush/Layer.h"
 #include "Rush/Log.h"
 
+#include "Rush/Input.h"
+#include "Rush/KeyCodes.h"
+#include "Rush/MouseButtonCodes.h"
+
 #include "Rush/ImGui/ImGuiLayer.h"
 
 // ---------Entry Point-----------------------------
