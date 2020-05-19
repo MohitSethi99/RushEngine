@@ -1,11 +1,15 @@
 #pragma once
 
 #ifdef RS_PLATFORM_WINDOWS
-	#ifdef RS_BUILD_DLL
-		#define RUSH_API __declspec(dllexport)
+	#if HZ_DYNAMIC_LINK
+		#ifdef RS_BUILD_DLL
+			#define RUSH_API __declspec(dllexport)
+		#else
+			#define RUSH_API __declspec(dllimport)
+		#endif // RS_BUILD_DLL
 	#else
-		#define RUSH_API __declspec(dllimport)
-	#endif // RS_BUILD_DLL
+		#define RUSH_API
+	#endif
 #else
 	#error Rush only supports Windows!
 #endif // RS_PLATFORM_WINDOWS
