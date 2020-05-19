@@ -32,6 +32,7 @@ public:
 	Sandbox() 
 	{
 		PushLayer(new ExampleLayer());
+		PushOverlay(new Rush::ImGuiLayer());
 	}
 	~Sandbox() {}
 };

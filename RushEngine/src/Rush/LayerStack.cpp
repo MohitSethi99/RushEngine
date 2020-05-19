@@ -5,6 +5,7 @@ namespace Rush
 {
 	LayerStack::LayerStack()
 	{
+		m_LayerInsert = m_Layers.begin();
 	}
 
 	LayerStack::~LayerStack()
@@ -15,8 +16,7 @@ namespace Rush
 
 	void LayerStack::PushLayer(Layer* layer)
 	{
-		m_Layers.emplace(m_Layers.begin() + m_LayerInsertIndex, layer);
-		m_LayerInsertIndex++;
+		m_LayerInsert = m_Layers.emplace(m_LayerInsert, layer);
 	}
 
 	void LayerStack::PushOverlay(Layer* overlay)
@@ -30,7 +30,7 @@ namespace Rush
 		if (it != m_Layers.end())
 		{
 			m_Layers.erase(it);
-			m_LayerInsertIndex--;
+			m_LayerInsert--;
 		}
 	}
 

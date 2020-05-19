@@ -118,7 +118,6 @@ project "Sandbox"
 	{
 		"RushEngine/vendor/spdlog/include",
 		"RushEngine/src",
-		"RushEngine/vendor",
 		"%{IncludeDir.glm}"
 	}
 
