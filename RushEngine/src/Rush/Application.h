@@ -11,6 +11,7 @@
 #include "Rush/ImGui/ImGuiLayer.h"
 
 #include "Rush/Renderer/Shader.h"
+#include "Rush/Renderer/Buffer.h"
 
 namespace Rush
 {
@@ -38,8 +39,10 @@ namespace Rush
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 
-		unsigned int m_VertexArray, m_VertexBuffer, m_IndexBuffer;
+		unsigned int m_VertexArray;
 		std::unique_ptr<Shader> m_Shader;
+		std::unique_ptr<VertexBuffer> m_VertexBuffer;
+		std::unique_ptr<IndexBuffer> m_IndexBuffer;
 
 		static Application* s_Instance;
 	};
