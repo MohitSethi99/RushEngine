@@ -10,6 +10,8 @@
 
 #include "Rush/ImGui/ImGuiLayer.h"
 
+#include "Rush/Renderer/Shader.h"
+
 namespace Rush
 {
 	class RUSH_API Application
@@ -37,6 +39,7 @@ namespace Rush
 		LayerStack m_LayerStack;
 
 		unsigned int m_VertexArray, m_VertexBuffer, m_IndexBuffer;
+		std::unique_ptr<Shader> m_Shader;
 
 		static Application* s_Instance;
 	};
