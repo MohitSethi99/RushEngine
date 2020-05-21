@@ -7,9 +7,4 @@ namespace Rush
 		: m_DebugName(debugName)
 	{
 	}
-
-	Layer::~Layer()
-	{
-
-	}
 }

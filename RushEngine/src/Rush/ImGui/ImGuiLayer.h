@@ -12,7 +12,7 @@ namespace Rush
 	{
 	public:
 		ImGuiLayer();
-		~ImGuiLayer();
+		~ImGuiLayer() = default;
 
 		void OnAttach();
 		void OnDetach();
