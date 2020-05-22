@@ -14,6 +14,8 @@
 #include "Rush/Renderer/Buffer.h"
 #include "Rush/Renderer/VertexArray.h"
 
+#include "Rush/Renderer/OrthographicCamera.h"
+
 namespace Rush
 {
 	class RUSH_API Application
@@ -45,6 +47,8 @@ namespace Rush
 
 		std::shared_ptr<Shader> m_BlueShader;
 		std::shared_ptr<VertexArray> m_SquareVA;
+
+		OrthographicCamera m_Camera;
 
 		static Application* s_Instance;
 	};
