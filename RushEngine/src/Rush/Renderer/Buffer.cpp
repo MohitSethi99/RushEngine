@@ -11,9 +11,8 @@ namespace Rush
 	{
 		switch (Renderer::GetAPI())
 		{
-			case RendererAPI::None:
-				RS_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
-			case RendererAPI::OpenGL:
+			case RendererAPI::API::None:    RS_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
+			case RendererAPI::API::OpenGL:  return new OpenGLVertexBuffer(vertices, size);
 				return new OpenGLVertexBuffer(vertices, size);
 		}
 
@@ -25,10 +24,8 @@ namespace Rush
 	{
 		switch (Renderer::GetAPI())
 		{
-			case RendererAPI::None:
-				RS_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
-			case RendererAPI::OpenGL:
-				return new OpenGLIndexBuffer(indices, size);
+			case RendererAPI::API::None:    RS_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
+			case RendererAPI::API::OpenGL:  return new OpenGLIndexBuffer(indices, size);
 		}
 
 		RS_CORE_ASSERT(false, "Unknown RendererAPI!");
