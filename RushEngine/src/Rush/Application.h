@@ -8,17 +8,12 @@
 #include "Rush/Events/Event.h"
 #include "Rush/Events/ApplicationEvent.h"
 
+#include "Rush/Core/Timestep.h"
 #include "Rush/ImGui/ImGuiLayer.h"
-
-#include "Rush/Renderer/Shader.h"
-#include "Rush/Renderer/Buffer.h"
-#include "Rush/Renderer/VertexArray.h"
-
-#include "Rush/Renderer/OrthographicCamera.h"
 
 namespace Rush
 {
-	class RUSH_API Application
+	class Application
 	{
 	public:
 		Application();
@@ -41,14 +36,7 @@ namespace Rush
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
-
-		std::shared_ptr<Shader> m_Shader;
-		std::shared_ptr<VertexArray> m_VertexArray;
-
-		std::shared_ptr<Shader> m_BlueShader;
-		std::shared_ptr<VertexArray> m_SquareVA;
-
-		OrthographicCamera m_Camera;
+		float m_LastFrameTime = 0.0f;
 
 		static Application* s_Instance;
 	};
