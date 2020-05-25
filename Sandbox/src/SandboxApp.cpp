@@ -1,12 +1,14 @@
 #include <Rush.h>
 
+#include "imgui.h"
+
 #include <glm/gtc/matrix_transform.hpp>
 
 class ExampleLayer : public Rush::Layer
 {
 public:
 	ExampleLayer()
-		: Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f)
+		: Layer("Example"), m_Camera(45.0f, 1280, 720, 0.1, 100), m_CameraPosition(0.0f)
 	{
 		m_VertexArray.reset(Rush::VertexArray::Create());
 
@@ -113,26 +115,43 @@ public:
 
 	void OnUpdate(Rush::Timestep ts) override
 	{
-		if (Rush::Input::IsKeyPressed(RS_KEY_LEFT))
-			m_CameraPosition.x -= m_CameraMoveSpeed * ts;
-		else if (Rush::Input::IsKeyPressed(RS_KEY_RIGHT))
-			m_CameraPosition.x += m_CameraMoveSpeed * ts;
+		if (Rush::Input::IsMouseButtonPressed(RS_MOUSE_BUTTON_RIGHT))
+		{
+			if (firstMouse)
+			{
+				lastX = Rush::Input::GetMouseX();
+				lastY = Rush::Input::GetMouseY();
+				firstMouse = false;
+			}
 
-		if (Rush::Input::IsKeyPressed(RS_KEY_UP))
-			m_CameraPosition.y += m_CameraMoveSpeed * ts;
-		else if (Rush::Input::IsKeyPressed(RS_KEY_DOWN))
-			m_CameraPosition.y -= m_CameraMoveSpeed * ts;
+			float xoffset = Rush::Input::GetMouseX() - lastX;
+			float yoffset = lastY - Rush::Input::GetMouseY();
+			lastX = Rush::Input::GetMouseX();
+			lastY = Rush::Input::GetMouseY();
 
-		if (Rush::Input::IsKeyPressed(RS_KEY_A))
-			m_CameraRotation += m_CameraRotationSpeed * ts;
-		if (Rush::Input::IsKeyPressed(RS_KEY_D))
-			m_CameraRotation -= m_CameraRotationSpeed * ts;
+			m_Camera.Rotate(xoffset, yoffset);
+
+			if (Rush::Input::IsKeyPressed(RS_KEY_A))
+				m_Camera.Move(RS_KEY_A, ts);
+			else if (Rush::Input::IsKeyPressed(RS_KEY_D))
+				m_Camera.Move(RS_KEY_D, ts);
+
+			if (Rush::Input::IsKeyPressed(RS_KEY_W))
+				m_Camera.Move(RS_KEY_W, ts);
+			else if (Rush::Input::IsKeyPressed(RS_KEY_S))
+				m_Camera.Move(RS_KEY_S, ts);
+
+			if (Rush::Input::IsKeyPressed(RS_KEY_Q))
+				m_CameraPosition.y += m_CameraMoveSpeed * ts;
+			else if (Rush::Input::IsKeyPressed(RS_KEY_E))
+				m_CameraPosition.y -= m_CameraMoveSpeed * ts;
+		}
+
+		if (Rush::Input::IsKeyPressed(RS_KEY_R))
+			m_CameraPosition = { 0.0f, 0.0f, 5.0f };
 
 		Rush::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		Rush::RenderCommand::Clear();
-
-		m_Camera.SetPosition(m_CameraPosition);
-		m_Camera.SetRotation(m_CameraRotation);
 
 		Rush::Renderer::BeginScene(m_Camera);
 
@@ -148,13 +167,34 @@ public:
 			}
 		}
 
-		Rush::Renderer::Submit(m_Shader, m_VertexArray);
+		glm::mat4 trans = glm::rotate(glm::mat4(1.0f), glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		Rush::Renderer::Submit(m_Shader, m_VertexArray, trans);
 
 		Rush::Renderer::EndScene();
 	}
 
 	void OnEvent(Rush::Event& event) override
 	{
+		if (event.GetEventType() == Rush::EventType::MouseButtonReleased) {
+			Rush::MouseButtonReleasedEvent& e = (Rush::MouseButtonReleasedEvent&)event;
+			if (e.GetMouseButton() == RS_MOUSE_BUTTON_RIGHT)
+				firstMouse = true;
+		}
+
+		if (event.GetEventType() == Rush::EventType::MouseScrolled) {
+			Rush::MouseScrolledEvent& e = (Rush::MouseScrolledEvent&)event;
+			m_Camera.Zoom(e.GetYOffset());
+		}
+	}
+
+	void OnImGuiRender()
+	{
+		ImGui::Begin("Camera Settings");
+
+		ImGui::Text("Rotation: %f, %f, %f", m_Camera.GetRotation().x, m_Camera.GetRotation().y, m_Camera.GetRotation().z);
+		ImGui::Text("Position: %f, %f, %f", m_Camera.GetPosition().x, m_Camera.GetPosition().y, m_Camera.GetPosition().z);
+		
+		ImGui::End();
 	}
 
 	private:
@@ -164,12 +204,16 @@ public:
 		std::shared_ptr<Rush::Shader> m_BlueShader;
 		std::shared_ptr<Rush::VertexArray> m_SquareVA;
 
-		Rush::OrthographicCamera m_Camera;
-		glm::vec3 m_CameraPosition;
+		Rush::PerspectiveCamera m_Camera;
+		glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 5.0f };
 		float m_CameraMoveSpeed = 5.0f;
 
-		float m_CameraRotation = 0.0f;
+		glm::vec3 m_CameraRotation = { 0.0f, 0.0f, 0.0f };
 		float m_CameraRotationSpeed = 180.0f;
+
+		bool firstMouse = true;
+		float lastX = 1280 / 2;
+		float lastY = 720 / 2;
 };
 
 class Sandbox : public Rush::Application
@@ -180,6 +224,7 @@ public:
 		PushLayer(new ExampleLayer());
 	}
 	~Sandbox() {}
+
 };
 
 Rush::Application* Rush::CreateApplication() 

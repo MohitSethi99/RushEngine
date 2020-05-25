@@ -23,6 +23,7 @@
 #include "Rush/Renderer/VertexArray.h"
 
 #include "Rush/Renderer/OrthographicCamera.h"
+#include "Rush/Renderer/PerspectiveCamera.h"
 // -------------------------------------------------
 
 

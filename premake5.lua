@@ -119,6 +119,7 @@ project "Sandbox"
 	{
 		"RushEngine/vendor/spdlog/include",
 		"RushEngine/src",
+		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}"
 	}
 
