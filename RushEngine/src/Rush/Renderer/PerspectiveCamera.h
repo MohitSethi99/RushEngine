@@ -4,6 +4,12 @@
 
 namespace Rush
 {
+	enum CameraMoveDirection
+	{
+		FORWARD, BACK,
+		RIGHT, LEFT,
+		UP, DOWN
+	};
 	class PerspectiveCamera
 	{
 	public:
@@ -17,7 +23,7 @@ namespace Rush
 
 		const glm::vec3& GetRotation() const { return glm::vec3(m_Pitch, m_Yaw, m_Rotation); }
 
-		void Move(int keycode, float deltaTime);
+		void Move(CameraMoveDirection direction, float deltaTime);
 		void Rotate(float xoffset, float yoffset);
 		void Zoom(float yoffset);
 
@@ -38,14 +44,14 @@ namespace Rush
 		float m_NearPlane = 0.1f;
 		float m_FarPlane = 100.0f;
 
-		glm::vec3 m_Position = { 0.0f, 0.0f, -10.0f };
+		glm::vec3 m_Position = { 0.0f, 0.0f, 10.0f };
 		float m_Rotation = 0.0f;
 		
 		glm::vec3 m_Front = { 0.0f, 0.0f, 5.0f };
 		glm::vec3 m_Up = { 0.0f, 1.0f, 0.0f };
 		glm::vec3 m_Right = { 1.0f, 0.0f, 0.0f };
 
-		float m_Yaw = 90.0f;
+		float m_Yaw = -90.0f;
 		float m_Pitch = 0.0f;
 	private:
 		void RecalculateViewMatrix();

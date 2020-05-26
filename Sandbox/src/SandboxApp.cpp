@@ -131,20 +131,20 @@ public:
 
 			m_Camera.Rotate(xoffset, yoffset);
 
-			if (Rush::Input::IsKeyPressed(RS_KEY_A))
-				m_Camera.Move(RS_KEY_A, ts);
-			else if (Rush::Input::IsKeyPressed(RS_KEY_D))
-				m_Camera.Move(RS_KEY_D, ts);
-
 			if (Rush::Input::IsKeyPressed(RS_KEY_W))
-				m_Camera.Move(RS_KEY_W, ts);
+				m_Camera.Move(Rush::CameraMoveDirection::FORWARD, ts);
 			else if (Rush::Input::IsKeyPressed(RS_KEY_S))
-				m_Camera.Move(RS_KEY_S, ts);
+				m_Camera.Move(Rush::CameraMoveDirection::BACK, ts);
+
+			if (Rush::Input::IsKeyPressed(RS_KEY_A))
+				m_Camera.Move(Rush::CameraMoveDirection::LEFT, ts);
+			else if (Rush::Input::IsKeyPressed(RS_KEY_D))
+				m_Camera.Move(Rush::CameraMoveDirection::RIGHT, ts);
 
 			if (Rush::Input::IsKeyPressed(RS_KEY_Q))
-				m_CameraPosition.y += m_CameraMoveSpeed * ts;
+				m_Camera.Move(Rush::CameraMoveDirection::UP, ts);
 			else if (Rush::Input::IsKeyPressed(RS_KEY_E))
-				m_CameraPosition.y -= m_CameraMoveSpeed * ts;
+				m_Camera.Move(Rush::CameraMoveDirection::DOWN, ts);
 		}
 
 		if (Rush::Input::IsKeyPressed(RS_KEY_R))

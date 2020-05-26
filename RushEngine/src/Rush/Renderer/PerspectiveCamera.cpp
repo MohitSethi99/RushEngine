@@ -35,17 +35,24 @@ namespace Rush
 		RecalculateViewMatrix();
 	}
 
-	void PerspectiveCamera::Move(int keycode, float deltaTime)
+	void PerspectiveCamera::Move(CameraMoveDirection direction, float deltaTime)
 	{
 		float velocity = m_TravelSpeed * deltaTime;
-		if (keycode == RS_KEY_W)
+
+		if (direction == FORWARD)
 			m_Position += m_Front * velocity;
-		if (keycode == RS_KEY_S)
+		else if (direction == BACK)
 			m_Position -= m_Front * velocity;
-		if (keycode == RS_KEY_A)
-			m_Position -= m_Right * velocity;
-		if (keycode == RS_KEY_D)
+
+		if (direction == RIGHT)
 			m_Position += m_Right * velocity;
+		else if (direction == LEFT)
+			m_Position -= m_Right * velocity;
+
+		if (direction == UP)
+			m_Position += m_Up * velocity;
+		else if (direction == DOWN)
+			m_Position -= m_Up * velocity;
 
 		RecalculateViewMatrix();
 	}
