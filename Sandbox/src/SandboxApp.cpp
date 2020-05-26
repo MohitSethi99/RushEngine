@@ -1,8 +1,11 @@
 #include <Rush.h>
 
+#include "Platform/OpenGL/OpenGLShader.h"
+
 #include "imgui.h"
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 class ExampleLayer : public Rush::Layer
 {
@@ -83,9 +86,9 @@ public:
 			}
 		)";
 
-		m_Shader.reset(new Rush::Shader(vertexSrc, fragmentSrc));
+		m_Shader.reset(Rush::Shader::Create(vertexSrc, fragmentSrc));
 
-		std::string blueShaderVertexSrc = R"(
+		std::string flatColorShaderVertexSrc = R"(
 			#version 330 core
 			
 			layout(location = 0) in vec3 a_Position;
@@ -99,18 +102,21 @@ public:
 			}
 		)";
 
-		std::string blueShaderFragmentSrc = R"(
+		std::string flatColorShaderFragmentSrc = R"(
 			#version 330 core
 			
 			layout(location = 0) out vec4 color;
 			in vec3 v_Position;
+
+			uniform vec3 u_Color;
+
 			void main()
 			{
-				color = vec4(0.2, 0.3, 0.8, 1.0);
+				color = vec4(u_Color, 1.0);
 			}
 		)";
 
-		m_BlueShader.reset(new Rush::Shader(blueShaderVertexSrc, blueShaderFragmentSrc));
+		m_FlatColorShader.reset(Rush::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
 	}
 
 	void OnUpdate(Rush::Timestep ts) override
@@ -157,13 +163,16 @@ public:
 
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
+		std::dynamic_pointer_cast<Rush::OpenGLShader>(m_FlatColorShader)->Bind();
+		std::dynamic_pointer_cast<Rush::OpenGLShader>(m_FlatColorShader)->UploadUniformFloat3("u_Color", m_SquareColor);
+
 		for (int y = 0; y < 20; y++)
 		{
 			for (int x = 0; x < 20; x++)
 			{
 				glm::vec3 pos(x * 0.11f, y * 0.11f, 0.0f);
 				glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
-				Rush::Renderer::Submit(m_BlueShader, m_SquareVA, transform);
+				Rush::Renderer::Submit(m_FlatColorShader, m_SquareVA, transform);
 			}
 		}
 
@@ -196,6 +205,8 @@ public:
 		ImGui::Text("FOV: %f", m_Camera.GetFOV());
 		ImGui::SliderFloat("Travel Speed", &m_Camera.m_TravelSpeed, 1.0f, 50.0f);
 		ImGui::SliderFloat("Mouse Sensitivity", &m_Camera.m_MouseSensitivity, 0.1f, 2.0f);
+
+		ImGui::ColorEdit3("Square Color", glm::value_ptr(m_SquareColor));
 		
 		ImGui::End();
 	}
@@ -204,8 +215,10 @@ public:
 		std::shared_ptr<Rush::Shader> m_Shader;
 		std::shared_ptr<Rush::VertexArray> m_VertexArray;
 
-		std::shared_ptr<Rush::Shader> m_BlueShader;
+		std::shared_ptr<Rush::Shader> m_FlatColorShader;
 		std::shared_ptr<Rush::VertexArray> m_SquareVA;
+
+		glm::vec3 m_SquareColor = { 0.2f, 0.3f, 0.8f };
 
 		Rush::PerspectiveCamera m_Camera;
 		glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 5.0f };
