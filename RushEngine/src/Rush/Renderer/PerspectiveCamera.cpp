@@ -7,7 +7,8 @@
 namespace Rush
 {
 	PerspectiveCamera::PerspectiveCamera(float fov, float width, float height, float nearPlane, float farPlane)
-		: m_ProjectionMatrix(glm::perspective(glm::radians(fov), (float)width/(float)height, nearPlane, farPlane)), m_ViewMatrix(1.0f)
+		: m_ProjectionMatrix(glm::perspective(glm::radians(fov), (float)width/(float)height, nearPlane, farPlane)), m_ViewMatrix(1.0f),
+		m_FOV(fov), m_Width(width), m_Height(height), m_NearPlane(nearPlane), m_FarPlane(farPlane)
 	{
 		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 		RecalculateViewMatrix();
@@ -28,9 +29,15 @@ namespace Rush
 		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 	}
 
+	void PerspectiveCamera::RecalculateProjectionMatrix()
+	{
+		m_ProjectionMatrix = glm::perspective(glm::radians(m_FOV), (float)m_Width / (float)m_Height, m_NearPlane, m_FarPlane);
+		RecalculateViewMatrix();
+	}
+
 	void PerspectiveCamera::Move(int keycode, float deltaTime)
 	{
-		float velocity = 5 * deltaTime;
+		float velocity = m_TravelSpeed * deltaTime;
 		if (keycode == RS_KEY_W)
 			m_Position += m_Front * velocity;
 		if (keycode == RS_KEY_S)
@@ -61,13 +68,13 @@ namespace Rush
 
 	void PerspectiveCamera::Zoom(float yoffset)
 	{
-		if (m_Zoom >= 1.0f && m_Zoom <= 100)
-			m_Zoom -= yoffset;
-		if (m_Zoom <= 1.0f)
-			m_Zoom = 1.0f;
-		if (m_Zoom >= 100)
-			m_Zoom = 100;
+		if (m_FOV >= 1.0f && m_FOV <= 100)
+			m_FOV -= yoffset;
+		if (m_FOV <= 1.0f)
+			m_FOV = 1.0f;
+		if (m_FOV >= 100)
+			m_FOV = 100;
 
-		RecalculateViewMatrix();
+		RecalculateProjectionMatrix();
 	}
 }

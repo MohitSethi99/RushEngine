@@ -193,6 +193,9 @@ public:
 
 		ImGui::Text("Rotation: %f, %f, %f", m_Camera.GetRotation().x, m_Camera.GetRotation().y, m_Camera.GetRotation().z);
 		ImGui::Text("Position: %f, %f, %f", m_Camera.GetPosition().x, m_Camera.GetPosition().y, m_Camera.GetPosition().z);
+		ImGui::Text("FOV: %f", m_Camera.GetFOV());
+		ImGui::SliderFloat("Travel Speed", &m_Camera.m_TravelSpeed, 1.0f, 50.0f);
+		ImGui::SliderFloat("Mouse Sensitivity", &m_Camera.m_MouseSensitivity, 0.1f, 2.0f);
 		
 		ImGui::End();
 	}
