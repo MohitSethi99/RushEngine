@@ -11,7 +11,7 @@ class ExampleLayer : public Rush::Layer
 {
 public:
 	ExampleLayer()
-		: Layer("Example"), m_Camera(45.0f, 1280, 720, 0.1, 100), m_CameraPosition(0.0f)
+		: Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f)
 	{
 		m_VertexArray.reset(Rush::VertexArray::Create());
 
@@ -121,43 +121,26 @@ public:
 
 	void OnUpdate(Rush::Timestep ts) override
 	{
-		if (Rush::Input::IsMouseButtonPressed(RS_MOUSE_BUTTON_RIGHT))
-		{
-			if (firstMouse)
-			{
-				lastX = Rush::Input::GetMouseX();
-				lastY = Rush::Input::GetMouseY();
-				firstMouse = false;
-			}
+		if (Rush::Input::IsKeyPressed(RS_KEY_LEFT))
+			m_CameraPosition.x -= m_CameraMoveSpeed * ts;
+		else if (Rush::Input::IsKeyPressed(RS_KEY_RIGHT))
+			m_CameraPosition.x += m_CameraMoveSpeed * ts;
 
-			float xoffset = Rush::Input::GetMouseX() - lastX;
-			float yoffset = lastY - Rush::Input::GetMouseY();
-			lastX = Rush::Input::GetMouseX();
-			lastY = Rush::Input::GetMouseY();
+		if (Rush::Input::IsKeyPressed(RS_KEY_UP))
+			m_CameraPosition.y += m_CameraMoveSpeed * ts;
+		else if (Rush::Input::IsKeyPressed(RS_KEY_DOWN))
+			m_CameraPosition.y -= m_CameraMoveSpeed * ts;
 
-			m_Camera.Rotate(xoffset, yoffset);
-
-			if (Rush::Input::IsKeyPressed(RS_KEY_W))
-				m_Camera.Move(Rush::CameraMoveDirection::FORWARD, ts);
-			else if (Rush::Input::IsKeyPressed(RS_KEY_S))
-				m_Camera.Move(Rush::CameraMoveDirection::BACK, ts);
-
-			if (Rush::Input::IsKeyPressed(RS_KEY_A))
-				m_Camera.Move(Rush::CameraMoveDirection::LEFT, ts);
-			else if (Rush::Input::IsKeyPressed(RS_KEY_D))
-				m_Camera.Move(Rush::CameraMoveDirection::RIGHT, ts);
-
-			if (Rush::Input::IsKeyPressed(RS_KEY_Q))
-				m_Camera.Move(Rush::CameraMoveDirection::UP, ts);
-			else if (Rush::Input::IsKeyPressed(RS_KEY_E))
-				m_Camera.Move(Rush::CameraMoveDirection::DOWN, ts);
-		}
-
-		if (Rush::Input::IsKeyPressed(RS_KEY_R))
-			m_CameraPosition = { 0.0f, 0.0f, 5.0f };
+		if (Rush::Input::IsKeyPressed(RS_KEY_A))
+			m_CameraRotation += m_CameraRotationSpeed * ts;
+		if (Rush::Input::IsKeyPressed(RS_KEY_D))
+			m_CameraRotation -= m_CameraRotationSpeed * ts;
 
 		Rush::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		Rush::RenderCommand::Clear();
+
+		m_Camera.SetPosition(m_CameraPosition);
+		m_Camera.SetRotation(m_CameraRotation);
 
 		Rush::Renderer::BeginScene(m_Camera);
 
@@ -176,35 +159,21 @@ public:
 			}
 		}
 
-		glm::mat4 trans = glm::rotate(glm::mat4(1.0f), glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		Rush::Renderer::Submit(m_Shader, m_VertexArray, trans);
+		Rush::Renderer::Submit(m_Shader, m_VertexArray);
 
 		Rush::Renderer::EndScene();
 	}
 
 	void OnEvent(Rush::Event& event) override
 	{
-		if (event.GetEventType() == Rush::EventType::MouseButtonReleased) {
-			Rush::MouseButtonReleasedEvent& e = (Rush::MouseButtonReleasedEvent&)event;
-			if (e.GetMouseButton() == RS_MOUSE_BUTTON_RIGHT)
-				firstMouse = true;
-		}
-
-		if (event.GetEventType() == Rush::EventType::MouseScrolled) {
-			Rush::MouseScrolledEvent& e = (Rush::MouseScrolledEvent&)event;
-			m_Camera.Zoom(e.GetYOffset());
-		}
 	}
 
 	void OnImGuiRender()
 	{
 		ImGui::Begin("Camera Settings");
 
-		ImGui::Text("Rotation: %f, %f, %f", m_Camera.GetRotation().x, m_Camera.GetRotation().y, m_Camera.GetRotation().z);
+		ImGui::Text("Rotation: %f, %f, %f", m_Camera.GetRotation());
 		ImGui::Text("Position: %f, %f, %f", m_Camera.GetPosition().x, m_Camera.GetPosition().y, m_Camera.GetPosition().z);
-		ImGui::Text("FOV: %f", m_Camera.GetFOV());
-		ImGui::SliderFloat("Travel Speed", &m_Camera.m_TravelSpeed, 1.0f, 50.0f);
-		ImGui::SliderFloat("Mouse Sensitivity", &m_Camera.m_MouseSensitivity, 0.1f, 2.0f);
 
 		ImGui::ColorEdit3("Square Color", glm::value_ptr(m_SquareColor));
 		
@@ -220,16 +189,12 @@ public:
 
 		glm::vec3 m_SquareColor = { 0.2f, 0.3f, 0.8f };
 
-		Rush::PerspectiveCamera m_Camera;
-		glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 5.0f };
+		Rush::OrthographicCamera m_Camera;
+		glm::vec3 m_CameraPosition;
 		float m_CameraMoveSpeed = 5.0f;
 
-		glm::vec3 m_CameraRotation = { 0.0f, 0.0f, 0.0f };
+		float m_CameraRotation = 0.0f;
 		float m_CameraRotationSpeed = 180.0f;
-
-		bool firstMouse = true;
-		float lastX = 1280 / 2;
-		float lastY = 720 / 2;
 };
 
 class Sandbox : public Rush::Application

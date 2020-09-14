@@ -6,7 +6,7 @@
 namespace Rush
 {
 	Renderer::SceneData* Renderer::s_SceneData = new Renderer::SceneData;
-	void Renderer::BeginScene(PerspectiveCamera& camera)
+	void Renderer::BeginScene(OrthographicCamera& camera)
 	{
 		s_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();
 	}
