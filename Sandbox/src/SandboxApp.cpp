@@ -21,7 +21,7 @@ public:
 			 0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
 		};
 
-		std::shared_ptr<Rush::VertexBuffer> vertexBuffer;
+		Rush::Ref<Rush::VertexBuffer> vertexBuffer;
 		vertexBuffer.reset(Rush::VertexBuffer::Create(vertices, sizeof(vertices)));
 		Rush::BufferLayout layout = {
 			{ Rush::ShaderDataType::Float3, "a_Position" },
@@ -31,7 +31,7 @@ public:
 		m_VertexArray->AddVertexBuffer(vertexBuffer);
 
 		uint32_t indices[3] = { 0, 1, 2 };
-		std::shared_ptr<Rush::IndexBuffer> indexBuffer;
+		Rush::Ref<Rush::IndexBuffer> indexBuffer;
 		indexBuffer.reset(Rush::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 
@@ -44,7 +44,7 @@ public:
 			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f
 		};
 
-		std::shared_ptr<Rush::VertexBuffer> squareVB;
+		Rush::Ref<Rush::VertexBuffer> squareVB;
 		squareVB.reset(Rush::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
 		squareVB->SetLayout({
 			{ Rush::ShaderDataType::Float3, "a_Position" },
@@ -53,7 +53,7 @@ public:
 		m_SquareVA->AddVertexBuffer(squareVB);
 
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-		std::shared_ptr<Rush::IndexBuffer> squareIB;
+		Rush::Ref<Rush::IndexBuffer> squareIB;
 		squareIB.reset(Rush::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
 		m_SquareVA->SetIndexBuffer(squareIB);
 
@@ -225,11 +225,11 @@ public:
 	}
 
 	private:
-		std::shared_ptr<Rush::Shader> m_Shader;
-		std::shared_ptr<Rush::VertexArray> m_VertexArray;
+		Rush::Ref<Rush::Shader> m_Shader;
+		Rush::Ref<Rush::VertexArray> m_VertexArray;
 
-		std::shared_ptr<Rush::Shader> m_FlatColorShader, m_TextureShader;
-		std::shared_ptr<Rush::VertexArray> m_SquareVA;
+		Rush::Ref<Rush::Shader> m_FlatColorShader, m_TextureShader;
+		Rush::Ref<Rush::VertexArray> m_SquareVA;
 
 		glm::vec3 m_SquareColor = { 0.2f, 0.3f, 0.8f };
 
