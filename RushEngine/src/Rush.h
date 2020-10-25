@@ -20,6 +20,7 @@
 
 #include "Rush/Renderer/Buffer.h"
 #include "Rush/Renderer/Shader.h"
+#include "Rush/Renderer/Texture.h"
 #include "Rush/Renderer/VertexArray.h"
 
 #include "Rush/Renderer/OrthographicCamera.h"

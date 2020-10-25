@@ -17,6 +17,7 @@ IncludeDir["GLFW"] = "RushEngine/vendor/GLFW/include"
 IncludeDir["Glad"] = "RushEngine/vendor/Glad/include"
 IncludeDir["ImGui"] = "RushEngine/vendor/imgui"
 IncludeDir["glm"] = "RushEngine/vendor/glm"
+IncludeDir["stb_image"] = "RushEngine/vendor/stb_image"
 
 group "Dependencies"
 	include "RushEngine/vendor/GLFW"
@@ -42,6 +43,8 @@ project "RushEngine"
 	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/stb_image/**.h",
+		"%{prj.name}/vendor/stb_image/**.cpp",
 		"%{prj.name}/vendor/glm/glm/**.hpp",
 		"%{prj.name}/vendor/glm/glm/**.inl",
 	}
@@ -58,7 +61,8 @@ project "RushEngine"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.stb_image}"
 	}
 
 	links 
